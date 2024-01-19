@@ -17,7 +17,7 @@ class GetScreen extends StatelessWidget {
         ),
       ),
       body: StreamBuilder<List<Map<String, dynamic>>>(
-        stream: GetModel.streamData(),
+        stream: GetModel.getUserData(),
         builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // 데이터 로딩 중일 때

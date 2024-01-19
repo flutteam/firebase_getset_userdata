@@ -2,7 +2,7 @@ import 'package:firebase_getset_userdata/firebase/firebase_constant.dart';
 
 class GetModel {
   // Firebase Firestore에서 user 컬렉션의 데이터를 스트리밍하는 메소드
-  static Stream<List<Map<String, dynamic>>> streamData() {
+  static Stream<List<Map<String, dynamic>>> getUserData() {
     return FirebaseManager.db
         .collection("user")
         .snapshots()
