@@ -3,6 +3,7 @@ import 'package:firebase_getset_userdata/firebase_options.dart';
 import 'package:firebase_getset_userdata/get_data/get_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import './set_data/set_screen.dart';
 
 void main() async {
   await initializeFirebase();
