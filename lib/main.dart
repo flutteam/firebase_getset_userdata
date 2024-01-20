@@ -5,10 +5,11 @@ import 'package:firebase_core/firebase_core.dart';
 import './set_data/set_screen.dart';
 
 void main() async {
+  await initializeFirebase();
   runApp(const MyApp());
 }
 
-void initializeFirebase() async {
+Future<void> initializeFirebase() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -20,7 +21,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    initializeFirebase();
     // readData();
     // return const Placeholder();
     return MaterialApp(
