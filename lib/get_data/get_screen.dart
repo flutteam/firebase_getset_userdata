@@ -117,31 +117,61 @@ class UserDetailsScreen extends StatelessWidget {
 
   const UserDetailsScreen({required this.userData, Key? key}) : super(key: key);
 
+  void modifyButtonOnTap() {}
+
+  void updateButtonOnTap() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("User Details"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("Name: ${userData["name"] ?? "Error name"}",
-                style: const TextStyle(
-                  fontSize: 18,
-                )),
-            Text("Age: ${userData["age"] ?? "Error age"}",
-                style: const TextStyle(
-                  fontSize: 18,
-                )),
-            Text("Gender: ${userData["gender"] ?? "Error gender"}",
-                style: const TextStyle(
-                  fontSize: 18,
-                )),
-          ],
-        ),
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 100,
+          ),
+          Text("Name: ${userData["name"] ?? "Error name"}",
+              style: const TextStyle(
+                fontSize: 18,
+              )),
+          Text("Age: ${userData["age"] ?? "Error age"}",
+              style: const TextStyle(
+                fontSize: 18,
+              )),
+          Text("Gender: ${userData["gender"] ?? "Error gender"}",
+              style: const TextStyle(
+                fontSize: 18,
+              )),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: modifyButtonOnTap,
+                icon: const Icon(
+                  Icons.mode_edit,
+                  size: 25,
+                  color: Colors.brown,
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              IconButton(
+                onPressed: updateButtonOnTap,
+                icon: const Icon(
+                  Icons.delete_forever,
+                  size: 25,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

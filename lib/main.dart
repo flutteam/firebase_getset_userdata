@@ -1,4 +1,3 @@
-import 'package:firebase_getset_userdata/firebase/firebase_constant.dart';
 import 'package:firebase_getset_userdata/firebase_options.dart';
 import 'package:firebase_getset_userdata/get_data/get_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,28 +16,51 @@ Future<void> initializeFirebase() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    readData();
-    // return const Placeholder();
-    return const MaterialApp(
-      home: GetScreen(),
-    );
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-void readData() async {
-  await FirebaseManager.db.collection("user").get().then((snapshot) {
-    for (var docSnapshot in snapshot.docs) {
-      docSnapshot.reference.get().then((snapshot) {
-        final data = snapshot.data();
-        print("name : ${data?["name"] ?? "Error name"}");
-        print("age : ${data?["age"] ?? "Error age"}");
-        print("gender : ${data?["gender"] ?? "Error gender"}");
-      });
-    }
-  });
+class _MyAppState extends State<MyApp> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _widgetOptions = <Widget>[
+    const GetScreen(),
+    SetScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: SafeArea(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+        // bottom navigation 선언
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: '유저 리스트',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: '유저 생성',
+            ),
+          ],
+          currentIndex: _selectedIndex, // 지정 인덱스로 이동
+          selectedItemColor: Colors.lightGreen,
+          onTap: _onItemTapped, // 선언했던 onItemTapped
+        ),
+      ),
+    );
+  }
 }
