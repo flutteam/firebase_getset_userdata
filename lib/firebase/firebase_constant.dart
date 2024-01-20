@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseManager {
-  static FirebaseFirestore db = FirebaseFirestore.instance;
+  static FirebaseFirestore db = FirebaseFirestore.instance; // 초기화
 }
