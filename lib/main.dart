@@ -1,5 +1,6 @@
 import 'package:firebase_getset_userdata/firebase/firebase_constant.dart';
 import 'package:firebase_getset_userdata/firebase_options.dart';
+import 'package:firebase_getset_userdata/get_data/get_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import './set_data/set_screen.dart';
@@ -21,10 +22,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // readData();
+    readData();
     // return const Placeholder();
-    return MaterialApp(
-      home: SetScreen(),
+    return const MaterialApp(
+      home: GetScreen(),
     );
   }
 }
