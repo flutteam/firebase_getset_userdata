@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_getset_userdata/update_data/update_screen.dart';
 import 'package:flutter/material.dart';
 
