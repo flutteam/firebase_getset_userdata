@@ -15,6 +15,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
   int newAge = 0;
   String newGender = "";
 
+  String dropdownValue = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,16 +72,39 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   });
                 },
               ),
+              // Use DropdownButton for gender selection
+              // Stack(
+              //   children: [
               TextFormField(
                 initialValue: widget.userData["gender"] ?? "",
                 decoration: const InputDecoration(labelText: "Gender"),
                 onChanged: (value) {
-                  // 텍스트가 변경될 때마다 성별 업데이트
                   setState(() {
                     newGender = value;
                   });
                 },
               ),
+              // DropdownButton<String>(
+              //   value: dropdownValue, // 현재 선택된 값
+              //   hint: const Text("Select Gender"),
+              //   icon: const Icon(Icons.arrow_downward),
+              //   iconSize: 24,
+              //   elevation: 16, // 드롭다운이 떠있을 때의 고도
+              //   style: const TextStyle(color: Colors.deepPurple),
+              //   onChanged: (String? newValue) {
+              //     setState(() {
+              //       dropdownValue = newValue!; // 새로운 값이 선택될 때마다 상태 업데이트
+              //       newGender = newValue;
+              //     });
+              //   },
+              //   items: <String>['', 'man', 'woman'] // 드롭다운에 표시될 항목들
+              //       .map<DropdownMenuItem<String>>((String value) {
+              //     return DropdownMenuItem<String>(
+              //       value: value,
+              //       child: Text(value),
+              //     );
+              //   }).toList(),
+              // ),
             ],
           ),
         ),
@@ -98,7 +123,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 style: TextStyle(
                   fontSize: 15,
                 ),
-                textAlign: TextAlign.center, // 텍스트를 중앙 정렬로 설정
+                textAlign: TextAlign.center,
               ),
             ),
             actions: <Widget>[
