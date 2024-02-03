@@ -11,6 +11,7 @@ class UpdateScreen extends StatefulWidget {
 }
 
 class _UpdateScreenState extends State<UpdateScreen> {
+  final TextEditingController _genderController = TextEditingController();
   String newName = "";
   int newAge = 0;
   String newGender = "";
@@ -72,7 +73,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
               ),
               GestureDetector(
                 onTap: () async {
-                  String? selectedGender = await showGenderSelectionDialog();
+                  String? selectedGender =
+                      await showGenderSelectionDialog(context);
                   if (selectedGender != null) {
                     setState(() {
                       newGender = selectedGender;
@@ -80,16 +82,19 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   }
                 },
                 child: TextFormField(
-                  initialValue: newGender,
+                  controller: _genderController,
                   decoration: const InputDecoration(
                     labelText: "Gender",
                   ),
                   readOnly: true,
                   onTap: () async {
-                    String? selectedGender = await showGenderSelectionDialog();
+                    String? selectedGender =
+                        await showGenderSelectionDialog(context);
                     if (selectedGender != null) {
                       setState(() {
                         newGender = selectedGender;
+                        _genderController.text = newGender;
+                        print("newGender updated : $newGender");
                       });
                     }
                   },
@@ -196,7 +201,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
     }
   }
 
-  Future<String?> showGenderSelectionDialog() async {
+  Future<String?> showGenderSelectionDialog(BuildContext context) async {
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) {
