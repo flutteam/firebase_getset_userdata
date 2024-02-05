@@ -2,20 +2,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_getset_userdata/get_data/get_model.dart';
 import 'package:firebase_getset_userdata/get_data/get_user_detail_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class GetScreen extends StatelessWidget {
-  const GetScreen({Key? key}) : super(key: key);
+  final bool showBottomTabs;
+  final Function(bool) onShowBottomTabsChanged;
+
+  const GetScreen({
+    Key? key,
+    required this.showBottomTabs,
+    required this.onShowBottomTabsChanged,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple[100],
+        backgroundColor: Colors.purple[50],
         title: const Text(
-          "Firebase CRUD Practice",
+          "User List",
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),
@@ -50,25 +57,36 @@ class GetScreen extends StatelessWidget {
               itemCount: userDataList.length,
               itemBuilder: (context, index) {
                 var userData = userDataList[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      // 유저 정보를 표시하는 화면으로
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              UserDetailsScreen(userData: userData),
+                return GestureDetector(
+                  onTap: () {
+                    // 유저 정보를 표시하는 화면으로
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UserDetailsScreen(
+                          userData: userData,
+                          showBottomTabs: showBottomTabs,
+                          onShowBottomTabsChanged: onShowBottomTabsChanged,
                         ),
-                      );
-                    },
-                    child: PersonContainer(
-                      // 각 사용자의 정보를 보여줌
-                      name: userData["name"] ?? "Error name",
-                      age: userData["age"] ?? "Error age",
-                      gender: userData["gender"] ?? "Error gender",
-                    ),
+                      ),
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          PersonContainer(
+                            // 각 사용자의 정보를 보여줌
+                            name: userData["name"] ?? "Error name",
+                            age: userData["age"] ?? "Error age",
+                            gender: userData["gender"] ?? "Error gender",
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      )
+                    ],
                   ),
                 );
               },
@@ -94,21 +112,25 @@ class PersonContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size deviceSize = MediaQuery.of(context).size;
+
     return Container(
-      height: 120,
-      width: 500,
+      height: deviceSize.height / 10,
+      width: deviceSize.width,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Colors.purple[50],
+        color: Colors.purple[100],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(name,
-              style: const TextStyle(
-                fontSize: 20,
-              )),
+          Text(
+            name,
+            style: const TextStyle(
+              fontSize: 20,
+            ),
+          ),
         ],
       ),
     );

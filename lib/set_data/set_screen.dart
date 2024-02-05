@@ -8,12 +8,14 @@ class SetScreen extends StatelessWidget {
   final nameTextFieldController = TextEditingController();
   final ageTextFieldController = TextEditingController();
   final genderTextFieldController = TextEditingController();
-  String name = "";
-  int age = -1;
-  String gender = "";
 
   /// DB에 정보를 User 정보를 저장하는 함수
   void completionButtonPressed({required BuildContext context}) {
+    final name = nameTextFieldController.text;
+    final age = int.parse(
+        ageTextFieldController.text == "" ? "-1" : ageTextFieldController.text);
+    final gender = genderTextFieldController.text;
+
     if (name == "" || age == -1 || gender == "") {
       createDialog(
         context: context,
@@ -22,6 +24,7 @@ class SetScreen extends StatelessWidget {
       );
       return;
     }
+
     User.setUserData(name: name, age: age, gender: gender);
     createDialog(
       context: context,
@@ -31,12 +34,15 @@ class SetScreen extends StatelessWidget {
     clearTextField();
   }
 
+  /// TextField를 모두 비우는 함수
   void clearTextField() {
+    // Controller 초기화
     nameTextFieldController.clear();
     ageTextFieldController.clear();
     genderTextFieldController.clear();
   }
 
+  /// 유저 정보가 생성되었을 때, Dialog를 띄우는 함수
   void createDialog({
     required BuildContext context,
     required String title,
@@ -85,11 +91,39 @@ class SetScreen extends StatelessWidget {
     );
   }
 
+  /// Gender를 선택할 때, SimpleDialog를 띄우는 함수
+  void showGenderSelectionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text('Select Gender'),
+          children: <Widget>[
+            SimpleDialogOption(
+              onPressed: () {
+                genderTextFieldController.text = "man";
+                Navigator.pop(context);
+              },
+              child: const Text('Man'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                genderTextFieldController.text = "woman";
+                Navigator.pop(context);
+              },
+              child: const Text('Woman'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber[500],
+        backgroundColor: Colors.purple[50],
         title: const Text(
           "User Create",
           style: TextStyle(
@@ -106,30 +140,26 @@ class SetScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(
-                height: 50,
+                height: 15,
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                height: 80,
-                decoration: BoxDecoration(
-                  color: Colors.pink[100],
-                  borderRadius: BorderRadiusDirectional.circular(15),
-                ),
+                height: 70,
                 child: Row(
                   children: [
                     const SizedBox(
-                      width: 20,
-                    ),
-                    const Text(
-                      "이름",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      width: 10,
                     ),
                     const SizedBox(
-                      width: 40,
+                      width: 80,
+                      child: Text(
+                        "Name",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                     Container(
                       width: 250,
@@ -139,40 +169,30 @@ class SetScreen extends StatelessWidget {
                       ),
                       child: TextField(
                         controller: nameTextFieldController,
-                        onChanged: ((text) {
-                          name = text;
-                        }),
                         decoration: const InputDecoration(),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 25,
-              ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                height: 80,
-                decoration: BoxDecoration(
-                  color: Colors.pink[100],
-                  borderRadius: BorderRadiusDirectional.circular(15),
-                ),
+                height: 70,
                 child: Row(
                   children: [
                     const SizedBox(
-                      width: 20,
-                    ),
-                    const Text(
-                      "나이",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      width: 10,
                     ),
                     const SizedBox(
-                      width: 40,
+                      width: 80,
+                      child: Text(
+                        "Age",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                     Container(
                       width: 250,
@@ -183,45 +203,29 @@ class SetScreen extends StatelessWidget {
                       child: TextField(
                         keyboardType: TextInputType.number,
                         controller: ageTextFieldController,
-                        onChanged: ((text) {
-                          int? inputValue = int.tryParse(text);
-                          if (inputValue != null) {
-                            // 정수로 변환된 값 사용
-                            age = inputValue;
-                          } else {
-                            print('올바른 숫자를 입력하세요.');
-                          }
-                        }),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 25,
-              ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                height: 80,
-                decoration: BoxDecoration(
-                  color: Colors.pink[100],
-                  borderRadius: BorderRadiusDirectional.circular(15),
-                ),
+                height: 70,
                 child: Row(
                   children: [
                     const SizedBox(
-                      width: 20,
-                    ),
-                    const Text(
-                      "성별",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      width: 10,
                     ),
                     const SizedBox(
-                      width: 40,
+                      width: 80,
+                      child: Text(
+                        "Gender",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                     Container(
                       width: 250,
@@ -231,17 +235,18 @@ class SetScreen extends StatelessWidget {
                       ),
                       child: TextField(
                         controller: genderTextFieldController,
-                        onChanged: ((text) {
-                          gender = text;
-                        }),
                         decoration: const InputDecoration(),
+                        readOnly: true,
+                        onTap: () async {
+                          showGenderSelectionDialog(context);
+                        },
                       ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(
-                height: 80,
+                height: 30,
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -257,9 +262,9 @@ class SetScreen extends StatelessWidget {
                       completionButtonPressed(context: context);
                     },
                     child: const Text(
-                      "완료",
+                      "Create",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 13,
                         fontWeight: FontWeight.w600,
                         color: Colors.blue,
                       ),
