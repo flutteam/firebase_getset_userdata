@@ -1,6 +1,5 @@
 import 'package:firebase_getset_userdata/update_data/update_screen.dart';
 import 'package:flutter/material.dart';
-import '../main.dart';
 
 // ignore: must_be_immutable
 class UserDetailsScreen extends StatefulWidget {
