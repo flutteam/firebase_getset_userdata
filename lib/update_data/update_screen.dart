@@ -3,8 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UpdateScreen extends StatefulWidget {
   final Map<String, dynamic> userData;
+  final bool showBottomTabs;
+  final Function(bool) onShowBottomTabsChanged;
 
-  const UpdateScreen({Key? key, required this.userData}) : super(key: key);
+  const UpdateScreen({
+    Key? key,
+    required this.userData,
+    required this.showBottomTabs,
+    required this.onShowBottomTabsChanged,
+  }) : super(key: key);
 
   @override
   _UpdateScreenState createState() => _UpdateScreenState();
@@ -20,7 +27,14 @@ class _UpdateScreenState extends State<UpdateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("User Details Update"),
+        backgroundColor: Colors.purple[50],
+        title: const Text(
+          "User Details Update",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -105,6 +119,13 @@ class _UpdateScreenState extends State<UpdateScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // UpdateScreen이 팝되어 UserDetailsScreen으로 돌아갈 때 bottom navigator를 다시 표시
+    widget.onShowBottomTabsChanged(true);
+    super.dispose();
   }
 
   Future<bool> _onBackPressed(BuildContext context) async {
