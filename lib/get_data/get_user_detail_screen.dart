@@ -1,4 +1,4 @@
-import 'package:firebase_getset_userdata/update_data/update_screen.dart';
+import 'package:firebase_getset_userdata/View/user_list.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -23,7 +23,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
     Map<String, dynamic>? newUserData = await Navigator.of(context).push(
       MaterialPageRoute(builder: (context) {
         widget.onShowBottomTabsChanged(false);
-        return UpdateScreen(
+        return UserList(
           userData: widget.userData,
           showBottomTabs: widget.showBottomTabs,
           onShowBottomTabsChanged: widget.onShowBottomTabsChanged,
