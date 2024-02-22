@@ -1,9 +1,8 @@
-// ignore_for_file: avoid_print, must_be_immutable
-import 'package:firebase_getset_userdata/set_data/set_model.dart';
+import 'package:firebase_getset_userdata/service/remote_service/firebase/firebase_functions.dart';
 import 'package:flutter/material.dart';
 
-class SetScreen extends StatelessWidget {
-  SetScreen({super.key});
+class SetUserDataView extends StatelessWidget {
+  SetUserDataView({super.key});
 
   final nameTextFieldController = TextEditingController();
   final ageTextFieldController = TextEditingController();
@@ -25,7 +24,8 @@ class SetScreen extends StatelessWidget {
       return;
     }
 
-    User.setUserData(name: name, age: age, gender: gender);
+    FirebaseFunctions.setUserData(name: name, age: age, gender: gender);
+
     createDialog(
       context: context,
       title: "유저 생성",

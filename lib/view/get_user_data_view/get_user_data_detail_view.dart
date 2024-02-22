@@ -1,32 +1,25 @@
-import 'package:firebase_getset_userdata/update_data/update_screen.dart';
+import 'package:firebase_getset_userdata/view/update_user_data_view/update_user_data_view.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class UserDetailsScreen extends StatefulWidget {
+class GetUserDataDetailView extends StatefulWidget {
   Map<String, dynamic> userData;
-  final bool showBottomTabs;
-  final Function(bool) onShowBottomTabsChanged;
 
-  UserDetailsScreen({
+  GetUserDataDetailView({
     Key? key,
     required this.userData,
-    required this.showBottomTabs,
-    required this.onShowBottomTabsChanged,
   }) : super(key: key);
 
   @override
-  State<UserDetailsScreen> createState() => _UserDetailsScreenState();
+  State<GetUserDataDetailView> createState() => _GetUserDataDetailViewState();
 }
 
-class _UserDetailsScreenState extends State<UserDetailsScreen> {
+class _GetUserDataDetailViewState extends State<GetUserDataDetailView> {
   Future<void> modifyButtonOnTap(BuildContext context) async {
     Map<String, dynamic>? newUserData = await Navigator.of(context).push(
       MaterialPageRoute(builder: (context) {
-        widget.onShowBottomTabsChanged(false);
-        return UpdateScreen(
+        return UpdateUserDataView(
           userData: widget.userData,
-          showBottomTabs: widget.showBottomTabs,
-          onShowBottomTabsChanged: widget.onShowBottomTabsChanged,
         );
       }),
     );

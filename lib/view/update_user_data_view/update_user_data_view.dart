@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UpdateScreen extends StatefulWidget {
+class UpdateUserDataView extends StatefulWidget {
   final Map<String, dynamic> userData;
-  final bool showBottomTabs;
-  final Function(bool) onShowBottomTabsChanged;
 
-  const UpdateScreen({
+  const UpdateUserDataView({
     Key? key,
     required this.userData,
-    required this.showBottomTabs,
-    required this.onShowBottomTabsChanged,
   }) : super(key: key);
 
   @override
-  _UpdateScreenState createState() => _UpdateScreenState();
+  _UpdateUserDataViewState createState() => _UpdateUserDataViewState();
 }
 
-class _UpdateScreenState extends State<UpdateScreen> {
+class _UpdateUserDataViewState extends State<UpdateUserDataView> {
   final TextEditingController _genderController = TextEditingController();
   String newName = "";
   int newAge = 0;
@@ -119,13 +115,6 @@ class _UpdateScreenState extends State<UpdateScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    // UpdateScreen이 팝되어 UserDetailsScreen으로 돌아갈 때 bottom navigator를 다시 표시
-    widget.onShowBottomTabsChanged(true);
-    super.dispose();
   }
 
   Future<bool> _onBackPressed(BuildContext context) async {
