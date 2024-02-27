@@ -1,7 +1,11 @@
-import 'package:firebase_getset_userdata/service/remote_service/firebase/firebase_functions.dart';
+import 'package:firebase_getset_userdata/view_model/new_code/set_user_data_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class SetUserDataView extends StatelessWidget {
+  late SetUserDataViewModel _setUserDataViewModel;
+
   SetUserDataView({super.key});
 
   final nameTextFieldController = TextEditingController();
@@ -9,7 +13,7 @@ class SetUserDataView extends StatelessWidget {
   final genderTextFieldController = TextEditingController();
 
   /// DB에 정보를 User 정보를 저장하는 함수
-  void completionButtonPressed({required BuildContext context}) {
+  void completionButtonPressed({required BuildContext context}) async {
     final name = nameTextFieldController.text;
     final age = int.parse(
         ageTextFieldController.text == "" ? "-1" : ageTextFieldController.text);
@@ -24,14 +28,26 @@ class SetUserDataView extends StatelessWidget {
       return;
     }
 
-    FirebaseFunctions.setUserData(name: name, age: age, gender: gender);
-
-    createDialog(
-      context: context,
-      title: "유저 생성",
-      description: "유저 정보가 생성되었습니다.",
+    bool isSet = await _setUserDataViewModel.setUserData(
+      name: name,
+      age: age,
+      gender: gender,
     );
-    clearTextField();
+
+    if (isSet) {
+      createDialog(
+        context: context,
+        title: "유저 생성",
+        description: "유저 정보가 생성되었습니다.",
+      );
+      clearTextField();
+    } else {
+      createDialog(
+        context: context,
+        title: "유저 생성 오류",
+        description: "유저 정보가 생성되지 못했습니다.",
+      );
+    }
   }
 
   /// TextField를 모두 비우는 함수
@@ -121,6 +137,8 @@ class SetUserDataView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _setUserDataViewModel = Provider.of<SetUserDataViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple[50],

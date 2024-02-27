@@ -8,4 +8,16 @@ class UserRepository {
   Stream<QuerySnapshot<User>> getUserData() {
     return _remoteService.getUserData();
   }
+
+  Future<bool> setUserData({
+    required String name,
+    required int age,
+    required String gender,
+  }) async {
+    return await _remoteService.setUserData(
+      name: name,
+      age: age,
+      gender: gender,
+    );
+  }
 }

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 
-class GetUserDataPersonContainerView extends StatelessWidget {
+class GetUserDataPersonContainerWidget extends StatelessWidget {
   final String name;
-  final dynamic age;
-  final String gender;
 
-  const GetUserDataPersonContainerView({
+  const GetUserDataPersonContainerWidget({
     required this.name,
-    required this.age,
-    required this.gender,
     Key? key,
   }) : super(key: key);
 
