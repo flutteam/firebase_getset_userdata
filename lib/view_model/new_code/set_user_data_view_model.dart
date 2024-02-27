@@ -1,5 +1,4 @@
 import 'package:firebase_getset_userdata/repository/user_repository.dart';
-import 'package:firebase_getset_userdata/service/remote_service/firebase/firebase_functions.dart';
 import 'package:flutter/material.dart';
 
 class SetUserDataViewModel with ChangeNotifier {
