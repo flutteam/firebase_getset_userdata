@@ -16,7 +16,7 @@ class FirebaseFunctions {
     return usersRef.snapshots();
   }
 
-  static Future<bool> setUserData(
+  Future<bool> setUserData(
       {required String name, required int age, required String gender}) async {
     try {
       await FirebaseConstants.colRefUser.doc().set({

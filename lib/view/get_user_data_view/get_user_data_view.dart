@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_getset_userdata/model/user.dart';
 import 'package:firebase_getset_userdata/view/get_user_data_view/get_user_data_detail_view.dart';
-import 'package:firebase_getset_userdata/view/get_user_data_view/get_user_data_person_container_view.dart';
-import 'package:firebase_getset_userdata/view_model/user_view_model.dart';
+import 'package:firebase_getset_userdata/view/get_user_data_view/get_user_data_person_container_widget.dart';
+import 'package:firebase_getset_userdata/view_model/new_code/get_user_data_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +24,7 @@ class GetUserDataView extends StatelessWidget {
           ),
         ),
       ),
-      body: Consumer<UserViewModel>(
+      body: Consumer<GetUserDataViewModel>(
         builder: (context, provider, child) {
           return StreamBuilder<QuerySnapshot<User>>(
             stream: provider.userList,
@@ -57,13 +57,21 @@ class GetUserDataView extends StatelessWidget {
                     var userData = userDataList[index];
                     return GestureDetector(
                       onTap: () {
+                        // userData 정보 업데이트 - DetailView에서 사용
+                        provider.setDetailUserData(
+                          User(
+                            name: userData["name"],
+                            age: userData["age"],
+                            gender: userData["gender"],
+                          ),
+                          userData["docRef"],
+                        );
+
                         // 유저 정보를 표시하는 화면으로
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => GetUserDataDetailView(
-                              userData: userData,
-                            ),
+                            builder: (context) => GetUserDataDetailView(),
                           ),
                         );
                       },
@@ -71,11 +79,9 @@ class GetUserDataView extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              GetUserDataPersonContainerView(
+                              GetUserDataPersonContainerWidget(
                                 // 각 사용자의 정보를 보여줌
                                 name: userData["name"] ?? "Error name",
-                                age: userData["age"] ?? "Error age",
-                                gender: userData["gender"] ?? "Error gender",
                               ),
                             ],
                           ),

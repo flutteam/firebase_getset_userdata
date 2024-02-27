@@ -1,32 +1,32 @@
+import 'package:firebase_getset_userdata/model/user.dart';
 import 'package:firebase_getset_userdata/view/update_user_data_view/update_user_data_view.dart';
+import 'package:firebase_getset_userdata/view_model/new_code/get_user_data_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
-class GetUserDataDetailView extends StatefulWidget {
-  Map<String, dynamic> userData;
+class GetUserDataDetailView extends StatelessWidget {
+  late GetUserDataViewModel _getUserDataViewModel;
 
-  GetUserDataDetailView({
-    Key? key,
-    required this.userData,
-  }) : super(key: key);
+  GetUserDataDetailView({super.key});
 
-  @override
-  State<GetUserDataDetailView> createState() => _GetUserDataDetailViewState();
-}
-
-class _GetUserDataDetailViewState extends State<GetUserDataDetailView> {
   Future<void> modifyButtonOnTap(BuildContext context) async {
     Map<String, dynamic>? newUserData = await Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) {
-        return UpdateUserDataView(
-          userData: widget.userData,
-        );
-      }),
+      MaterialPageRoute(
+        builder: (context) {
+          return UpdateUserDataView();
+        },
+      ),
     );
     if (newUserData != null) {
-      setState(() {
-        widget.userData = newUserData;
-      });
+      // TODO: 새로운 유저 데이터 state 변경 및 notify
+      _getUserDataViewModel.setDetailUserData(
+        User(
+            name: newUserData["name"],
+            age: newUserData["age"],
+            gender: newUserData["gender"]),
+        newUserData["docRef"],
+      );
     }
   }
 
@@ -104,11 +104,14 @@ class _GetUserDataDetailViewState extends State<GetUserDataDetailView> {
                       color: Colors.blue[300],
                     ),
                   ),
-                  onPressed: () {
-                    print("확인버튼이 눌렸습니다....");
-                    deleteUserData(
-                      context: context,
-                    );
+                  onPressed: () async {
+                    bool deleted = await _getUserDataViewModel.deleteUserData(
+                        context: context);
+                    if (deleted) {
+                      Navigator.popUntil(context, ModalRoute.withName("/"));
+                    } else {
+                      Navigator.pop(context);
+                    }
                   },
                 ),
               ],
@@ -119,21 +122,10 @@ class _GetUserDataDetailViewState extends State<GetUserDataDetailView> {
     );
   }
 
-  /// 유저 정보를 DB에서 삭제하는 함수
-  void deleteUserData({
-    required BuildContext context,
-  }) {
-    widget.userData["docRef"].delete().then((value) {
-      print("유저 정보 삭제 완료 !");
-      Navigator.popUntil(context, ModalRoute.withName("/"));
-    }).catchError((err) {
-      print("유저 정보 삭제 실패....");
-      Navigator.pop(context);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    _getUserDataViewModel = Provider.of<GetUserDataViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple[50],
@@ -150,15 +142,15 @@ class _GetUserDataDetailViewState extends State<GetUserDataDetailView> {
           const SizedBox(
             height: 100,
           ),
-          Text("Name: ${widget.userData["name"] ?? "Error name"}",
+          Text("Name: ${_getUserDataViewModel.detailUserData.name}",
               style: const TextStyle(
                 fontSize: 18,
               )),
-          Text("Age: ${widget.userData["age"] ?? "Error age"}",
+          Text("Age: ${_getUserDataViewModel.detailUserData.age}",
               style: const TextStyle(
                 fontSize: 18,
               )),
-          Text("Gender: ${widget.userData["gender"] ?? "Error gender"}",
+          Text("Gender: ${_getUserDataViewModel.detailUserData.gender}",
               style: const TextStyle(
                 fontSize: 18,
               )),
